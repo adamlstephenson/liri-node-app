@@ -1,10 +1,12 @@
 require("dotenv").config();
 
+var Twitter = require('twitter');
+var Spotify = require('node-spotify-api');
 var fs = require("fs");
 var keys = require("./key.js");
 var request = require("request");
 
- var spotify = new Spotify(keys.spotify);
+var spotify = new Spotify(keys.spotify);
 var client = new Twitter(keys.twitter);
 
 var command = process.argv[2]
@@ -27,8 +29,11 @@ else if(command === "do-what-it-says") {
 // Functions ============================================================================================
 
 function displayTweets() {
-    request("https://api.twitter.com/1.1/statuses/retweets_of_me.json", function(error, response, body) {
-        //console.log(response)
+
+    request("https://api.twitter.com/1.1/statuses/home_timeline.json", function(error, response, body) {
+        
+        console.log(response)
+        
         if(!error && response.statusCode === 200) {
            // console.log(body)
         }
