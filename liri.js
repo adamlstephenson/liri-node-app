@@ -30,12 +30,22 @@ else if(command === "do-what-it-says") {
 
 function displayTweets() {
 
-    request("https://api.twitter.com/1.1/statuses/home_timeline.json", function(error, response, body) {
-        
-        console.log(response)
-        
+    var params = {screen_name: 'MrSnakeFavre'};
+
+    client.get("https://api.twitter.com/1.1/statuses/home_timeline.json", params, function(error, tweets, response) {
+ 
         if(!error && response.statusCode === 200) {
-           // console.log(body)
+            for(let i = 0; i < tweets.length; i++) {
+                var date = tweets[i].created_at;
+                var tweetText = tweets[i].text;
+                var userName = tweets[i].user.name;
+
+                console.log(userName)
+                console.log(tweetText)
+                console.log(date)
+                console.log("===============================")
+
+            }
         }
 
     })
