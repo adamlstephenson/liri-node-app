@@ -5,11 +5,13 @@ var Spotify = require('node-spotify-api');
 var fs = require("fs");
 var keys = require("./key.js");
 var request = require("request");
+var omdb = require("omdb");
 
 var spotify = new Spotify(keys.spotify);
 var client = new Twitter(keys.twitter);
 
-var command = process.argv[2]
+var command = process.argv[2];
+var searchTerm = process.argv[3];
 
 // Command Logic =======================================================================================
 
@@ -45,6 +47,10 @@ function displayTweets() {
                 console.log(date)
                 console.log("===============================")
 
+                    // fs.appendFile("random.txt", userName + ":" + tweetText + " " + date, function(error) {
+                    //     console.log("success")
+                    // })
+
             }
         }
 
@@ -53,12 +59,32 @@ function displayTweets() {
 
 function showSong() {
 
+    spotify.search({type: "track", query: searchTerm}, function(error, data) {
+        if(error) {
+            return console.log('Error occurred: ' + error);
+          }
+        console.log(data.tracks.items)
+    })
+
 }
 
 function showMovie() {
+    
+    request("http://www.omdbapi.com/?t=" + searchTerm + "&y=&plot=short&apikey=trilogy", function(error, response, body) {
+        if (!error && response.statusCode === 200) {
+            console.log("The movie's title: " + JSON.parse(body).Title);
+            console.log("The movie's release date: " + JSON.parse(body).Released);
+            console.log("The movie's actors: " + JSON.parse(body).Actors);
+            console.log("The movie's plot: " + JSON.parse(body).Plot);
+            console.log("The movie's language: " + JSON.parse(body).Language);
+            console.log("The movie's imdb rating: " + JSON.parse(body).imdbRating);
+            console.log("The movie's rotten tomatoes rating: " + JSON.parse(body).Ratings[1].Value);
+        } else {
+            console.log(error)
+        }
+    })
 
 }
-
 function doWhat() {
 
 }
