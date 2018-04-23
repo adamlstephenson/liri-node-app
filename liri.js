@@ -47,10 +47,6 @@ function displayTweets() {
                 console.log(date)
                 console.log("===============================")
 
-                    // fs.appendFile("random.txt", userName + ":" + tweetText + " " + date, function(error) {
-                    //     console.log("success")
-                    // })
-
             }
         }
 
@@ -59,18 +55,37 @@ function displayTweets() {
 
 function showSong() {
 
+    if (searchTerm === undefined) {
+        searchTerm = "The Sign Ace";
+    }
+
     spotify.search({type: "track", query: searchTerm}, function(error, data) {
-        if(error) {
+        if (error) {
             return console.log('Error occurred: ' + error);
           }
-        console.log(data.tracks.items)
+
+        var songName = data.tracks.items[0].name;
+        var artist = data.tracks.items[0].artists[0].name;
+        var albumName = data.tracks.items[0].album.name;
+        var previewLink = data.tracks.items[0].preview_url;
+
+        console.log("Song Title: " + songName)
+        console.log("Artist: " + artist)
+        console.log("Album Name: " + albumName)
+        console.log("Preview Link: " + previewLink)
+        console.log("==========================================================================================================================")
     })
 
 }
 
 function showMovie() {
+
+    if (searchTerm === undefined) {
+        searchTerm = "Mr. Nobody";
+    }
     
     request("http://www.omdbapi.com/?t=" + searchTerm + "&y=&plot=short&apikey=trilogy", function(error, response, body) {
+
         if (!error && response.statusCode === 200) {
             console.log("The movie's title: " + JSON.parse(body).Title);
             console.log("The movie's release date: " + JSON.parse(body).Released);
@@ -79,6 +94,7 @@ function showMovie() {
             console.log("The movie's language: " + JSON.parse(body).Language);
             console.log("The movie's imdb rating: " + JSON.parse(body).imdbRating);
             console.log("The movie's rotten tomatoes rating: " + JSON.parse(body).Ratings[1].Value);
+            console.log("===============================")
         } else {
             console.log(error)
         }
