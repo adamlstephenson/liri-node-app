@@ -87,4 +87,27 @@ function showMovie() {
 }
 function doWhat() {
 
+        fs.readFile("random.txt", "utf8", function(error, data) {
+            if (error) {
+                console.log(error)
+            }
+
+            var splitData = data.split(", ");
+            var newCommand = splitData[0];
+                searchTerm = splitData[1];
+                console.log(searchTerm);
+
+            if(newCommand === "my-tweets") {
+                displayTweets()
+            }
+            else if(newCommand === "spotify-this-song") {
+                showSong()
+            }
+            else if(newCommand === "movie-this") {
+                showMovie()
+            }
+            else if(newCommand === "do-what-it-says") {
+                console.log("You're throwing me for a loop!")
+            }
+        })
 }
